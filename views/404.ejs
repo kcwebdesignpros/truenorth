@@ -1,0 +1,62 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<main id="main">
+  <section class="page-hero page-hero--plain">
+    <div class="container page-hero__inner">
+      <p class="eyebrow">Error 404</p>
+      <h1 class="page-hero__title">This page has moved on — but your smile has not</h1>
+      <p class="page-hero__intro">The page you were looking for is not here. It may have been renamed, or the link may have a typo. Here are the places most people are heading.</p>
+      <div class="page-hero__actions">
+        <a class="btn btn--primary btn--lg" href="/"><%- icon('arrow-left', 19) %> Back to the homepage</a>
+        <a class="btn btn--outline-light btn--lg" href="/contact#book"><%- icon('calendar-check', 19) %> Book an appointment</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="lost-grid">
+        <a class="lost reveal" href="/services">
+          <span class="lost__ico"><%- icon('tooth', 26) %></span>
+          <h2>Services</h2>
+          <p>Six treatment areas, from routine cleanings to full-arch implants.</p>
+        </a>
+        <a class="lost reveal" style="--d:70ms" href="/new-patients">
+          <span class="lost__ico"><%- icon('clipboard-check', 26) %></span>
+          <h2>New patients</h2>
+          <p>What happens on your first visit and the $99 new-patient special.</p>
+        </a>
+        <a class="lost reveal" style="--d:140ms" href="/doctors">
+          <span class="lost__ico"><%- icon('users', 26) %></span>
+          <h2>Meet the doctors</h2>
+          <p>The clinicians who will actually be treating you.</p>
+        </a>
+        <a class="lost reveal" style="--d:210ms" href="/blog">
+          <span class="lost__ico"><%- icon('file-text', 26) %></span>
+          <h2>Journal</h2>
+          <p>Practical, dentist-written articles about real oral health questions.</p>
+        </a>
+        <a class="lost reveal" style="--d:280ms" href="/faq">
+          <span class="lost__ico"><%- icon('headphones', 26) %></span>
+          <h2>FAQ</h2>
+          <p>Costs, comfort, insurance and scheduling answered in plain English.</p>
+        </a>
+        <a class="lost reveal" style="--d:350ms" href="/contact">
+          <span class="lost__ico"><%- icon('phone', 26) %></span>
+          <h2>Contact</h2>
+          <p>Call, email or send a request and we will get straight back to you.</p>
+        </a>
+      </div>
+
+      <div class="empty empty--tight reveal">
+        <p>Still stuck? Call <a href="tel:<%= site.phoneHref %>"><%= site.phone %></a> and we will point you in the right direction.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/main.js?v=<%= assetVersion %>" defer></script>
+</body>
+</html>

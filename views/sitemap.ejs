@@ -1,0 +1,90 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<main id="main">
+  <section class="page-hero page-hero--plain">
+    <div class="container page-hero__inner">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol><li><a href="/">Home</a></li><li><span aria-current="page">Sitemap</span></li></ol>
+      </nav>
+      <p class="eyebrow">Every page in one place</p>
+      <h1 class="page-hero__title">Sitemap</h1>
+      <p class="page-hero__intro">A complete index of <%= site.name %> — services, patient information, our clinical team and the oral health journal.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="sitemap">
+        <div class="sitemap__col reveal">
+          <h2 class="sitemap__title"><%- icon('tooth', 20) %> Services</h2>
+          <ul class="sitemap__list">
+            <li><a href="/services">All services</a></li>
+            <% services.forEach(function (s) { %>
+            <li><a href="/services/<%= s.slug %>"><%= s.name %></a></li>
+            <% }); %>
+          </ul>
+        </div>
+
+        <div class="sitemap__col reveal" style="--d:70ms">
+          <h2 class="sitemap__title"><%- icon('building', 20) %> Practice</h2>
+          <ul class="sitemap__list">
+            <% ['about','doctors','technology','reviews','careers'].forEach(function (slug) { %>
+            <% var p = pages.bySlug[slug]; if (!p) return; %>
+            <li><a href="<%= p.path %>"><%= p.name %></a></li>
+            <% }); %>
+          </ul>
+        </div>
+
+        <div class="sitemap__col reveal" style="--d:140ms">
+          <h2 class="sitemap__title"><%- icon('clipboard-check', 20) %> Patients</h2>
+          <ul class="sitemap__list">
+            <% ['new-patients','insurance-financing','faq','contact'].forEach(function (slug) { %>
+            <% var p = pages.bySlug[slug]; if (!p) return; %>
+            <li><a href="<%= p.path %>"><%= p.name %></a></li>
+            <% }); %>
+          </ul>
+        </div>
+
+        <div class="sitemap__col reveal" style="--d:210ms">
+          <h2 class="sitemap__title"><%- icon('file-text', 20) %> Journal</h2>
+          <ul class="sitemap__list">
+            <li><a href="/blog">All articles</a></li>
+            <% posts.forEach(function (p) { %>
+            <li><a href="/blog/<%= p.slug %>"><%= p.title %></a></li>
+            <% }); %>
+          </ul>
+        </div>
+
+        <div class="sitemap__col reveal" style="--d:280ms">
+          <h2 class="sitemap__title"><%- icon('lock', 20) %> Legal</h2>
+          <ul class="sitemap__list">
+            <% site.legalLinks.forEach(function (l) { %>
+            <li><a href="<%= l.path %>"><%= l.label %></a></li>
+            <% }); %>
+          </ul>
+        </div>
+
+        <div class="sitemap__col reveal" style="--d:350ms">
+          <h2 class="sitemap__title"><%- icon('phone', 20) %> Contact</h2>
+          <ul class="sitemap__list sitemap__list--plain">
+            <li><%= site.address.street %></li>
+            <li><%= site.address.city %>, <%= site.address.region %> <%= site.address.postal %></li>
+            <li><a href="tel:<%= site.phoneHref %>"><%= site.phone %></a></li>
+            <li><a href="tel:<%= site.emergencyPhoneHref %>">Emergency: <%= site.emergencyPhone %></a></li>
+            <li><a href="mailto:<%= site.email %>"><%= site.email %></a></li>
+            <li><%= site.hoursSummary %></li>
+          </ul>
+          <p class="sitemap__xml"><a href="/sitemap.xml">sitemap.xml <%- icon('external-link', 15) %></a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%- include('partials/cta', { cta: { h2: 'Ready when you are', text: 'Book online in under a minute, or call and speak to a real person at the front desk.', primary: { label: 'Book online', path: '/contact#book' } } }) %>
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/main.js?v=<%= assetVersion %>" defer></script>
+</body>
+</html>

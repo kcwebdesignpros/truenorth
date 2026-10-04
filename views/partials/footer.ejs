@@ -1,0 +1,114 @@
+<footer class="site-footer" id="siteFooter">
+  <div class="footer__glow" aria-hidden="true"></div>
+
+  <div class="container footer__main">
+    <div class="footer__brand">
+      <a class="footer__logo" href="/" aria-label="<%= site.name %> — home">
+        <img src="/img/logo.webp" width="<%= site.logoWidth %>" height="<%= site.logoHeight %>" alt="<%= site.name %> logo" loading="lazy" decoding="async">
+      </a>
+      <p class="footer__about"><%= site.description %></p>
+
+      <ul class="footer__ratings">
+        <% site.reviewProfiles.forEach(function (r) { %>
+        <li class="footer__rating">
+          <span class="footer__rating-ico"><%- icon(r.icon, 20) %></span>
+          <span>
+            <strong><%= r.rating %> <span class="footer__stars" aria-hidden="true">★★★★★</span></strong>
+            <small><%= r.count.toLocaleString('en-US') %> <%= r.name %> reviews</small>
+          </span>
+        </li>
+        <% }); %>
+      </ul>
+
+      <ul class="footer__socials">
+        <% site.socials.forEach(function (s) { %>
+        <li><a href="<%= s.url %>" target="_blank" rel="noopener noreferrer" aria-label="<%= site.name %> on <%= s.name %>"><%- icon(s.icon, 18) %></a></li>
+        <% }); %>
+      </ul>
+    </div>
+
+    <nav class="footer__cols" aria-label="Footer navigation">
+      <div class="footer__col">
+        <h2 class="footer__title">Services</h2>
+        <ul class="footer__links">
+          <% services.forEach(function (s) { %>
+          <li><a href="/services/<%= s.slug %>"><%= s.shortName %></a></li>
+          <% }); %>
+          <li><a href="/services">All services</a></li>
+        </ul>
+      </div>
+
+      <% site.footerColumns.forEach(function (col) { %>
+      <div class="footer__col">
+        <h2 class="footer__title"><%= col.title %></h2>
+        <ul class="footer__links">
+          <% col.links.forEach(function (l) { %>
+          <li><a href="<%= l.path %>"><%= l.label %></a></li>
+          <% }); %>
+        </ul>
+      </div>
+      <% }); %>
+
+      <div class="footer__col footer__col--contact">
+        <h2 class="footer__title">Visit us</h2>
+        <address class="footer__address">
+          <a href="<%= site.mapUrl %>" target="_blank" rel="noopener">
+            <%- icon('map-pin', 16) %>
+            <span><%= site.address.street %><br><%= site.address.city %>, <%= site.address.region %> <%= site.address.postal %></span>
+          </a>
+          <a href="tel:<%= site.phoneHref %>"><%- icon('phone', 16) %><span><%= site.phone %></span></a>
+          <a href="tel:<%= site.emergencyPhoneHref %>"><%- icon('alert-triangle', 16) %><span>24/7 Emergency: <%= site.emergencyPhone %></span></a>
+          <a href="mailto:<%= site.email %>"><%- icon('mail', 16) %><span><%= site.email %></span></a>
+        </address>
+
+        <h3 class="footer__subtitle">Office hours</h3>
+        <ul class="footer__hours">
+          <% site.hours.forEach(function (h) { %>
+          <li><span><%= h.day %></span><strong><%= h.time %></strong></li>
+          <% }); %>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="footer__cta">
+      <div class="footer__cta-text">
+        <h2>Ready to book your visit?</h2>
+        <p>Same-day emergency slots, Saturday appointments and a $99 new-patient special. No pressure, no judgement — just a plan you understand.</p>
+      </div>
+      <div class="footer__cta-actions">
+        <a class="btn btn--primary btn--lg" href="/contact#book"><%- icon('calendar-check', 19) %> Book online</a>
+        <a class="btn btn--outline-light btn--lg" href="tel:<%= site.phoneHref %>"><%- icon('phone', 19) %> <%= site.phone %></a>
+      </div>
+    </div>
+
+    <div class="footer__areas">
+      <h3 class="footer__subtitle">Serving the Kansas City northland</h3>
+      <p class="footer__areas-list"><%= site.serviceAreas.join(' · ') %></p>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copy">
+        &copy; <%= year %> <%= site.legalName %>. All rights reserved.
+        <span class="footer__licence">Missouri Dental Board Practice License #MO-2011-44817</span>
+      </p>
+      <ul class="footer__legal">
+        <% site.legalLinks.forEach(function (l) { %>
+        <li><a href="<%= l.path %>"><%= l.label %></a></li>
+        <% }); %>
+      </ul>
+      <p class="footer__credit">
+        <%= site.credit.prefix %><a href="<%= site.credit.url %>" target="_blank" rel="noopener"><%= site.credit.label %></a>
+      </p>
+    </div>
+
+    <p class="footer__disclaimer">
+      This website is for general information only and does not provide medical or dental advice, diagnosis or treatment.
+      Reading it does not create a dentist–patient relationship. Always consult a licensed dentist about your own condition.
+      If you are experiencing a medical emergency, call 911.
+    </p>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" type="button" aria-label="Back to top"><%- icon('arrow-up', 20) %></button>

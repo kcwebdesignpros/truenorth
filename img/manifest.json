@@ -1,0 +1,155 @@
+{
+  "hero-smile.webp": {
+    "natural": 1536,
+    "height": 1024,
+    "variants": [
+      480,
+      760,
+      1100,
+      1400
+    ],
+    "bytes": 73672
+  },
+  "clinic-interior.webp": {
+    "natural": 1536,
+    "height": 1024,
+    "variants": [
+      420,
+      700,
+      1000,
+      1400
+    ],
+    "bytes": 164874
+  },
+  "about-dentist-patient.webp": {
+    "natural": 1024,
+    "height": 1024,
+    "variants": [
+      380,
+      620,
+      880
+    ],
+    "bytes": 66466
+  },
+  "cta-smile.webp": {
+    "natural": 1536,
+    "height": 1024,
+    "variants": [
+      560,
+      900,
+      1200,
+      1400
+    ],
+    "bytes": 159466
+  },
+  "svc-general-dentistry.webp": {
+    "natural": 1536,
+    "height": 1024,
+    "variants": [
+      420,
+      700,
+      1000,
+      1400
+    ],
+    "bytes": 78972
+  },
+  "svc-cosmetic-dentistry.webp": {
+    "natural": 1536,
+    "height": 1024,
+    "variants": [
+      420,
+      700,
+      1000,
+      1400
+    ],
+    "bytes": 120004
+  },
+  "svc-teeth-whitening.webp": {
+    "natural": 1536,
+    "height": 1024,
+    "variants": [
+      420,
+      700,
+      1000,
+      1400
+    ],
+    "bytes": 95412
+  },
+  "svc-dental-implants.webp": {
+    "natural": 1536,
+    "height": 1024,
+    "variants": [
+      420,
+      700,
+      1000,
+      1400
+    ],
+    "bytes": 146908
+  },
+  "svc-orthodontics.webp": {
+    "natural": 1536,
+    "height": 1024,
+    "variants": [
+      420,
+      700,
+      1000,
+      1400
+    ],
+    "bytes": 132420
+  },
+  "svc-emergency-dentistry.webp": {
+    "natural": 1536,
+    "height": 1024,
+    "variants": [
+      420,
+      700,
+      1000,
+      1400
+    ],
+    "bytes": 111656
+  },
+  "team-marcus-reed.webp": {
+    "natural": 1024,
+    "height": 1024,
+    "variants": [
+      240,
+      360,
+      480,
+      720
+    ],
+    "bytes": 41526
+  },
+  "team-amelia-hart.webp": {
+    "natural": 1024,
+    "height": 1024,
+    "variants": [
+      240,
+      360,
+      480,
+      720
+    ],
+    "bytes": 41690
+  },
+  "team-priya-nair.webp": {
+    "natural": 1024,
+    "height": 1024,
+    "variants": [
+      240,
+      360,
+      480,
+      720
+    ],
+    "bytes": 49034
+  },
+  "team-jordan-ellis.webp": {
+    "natural": 1024,
+    "height": 1024,
+    "variants": [
+      240,
+      360,
+      480,
+      720
+    ],
+    "bytes": 54314
+  }
+}

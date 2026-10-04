@@ -1,0 +1,34 @@
+<% if (cta) { %>
+<section class="cta-band">
+  <div class="cta-band__bg" aria-hidden="true">
+    <%- imgTag('/img/cta-smile.webp', '', { sizes: '100vw', cls: 'cta-band__img' }) %>
+    <span class="cta-band__scrim"></span>
+  </div>
+  <div class="container cta-band__inner">
+    <div class="cta-band__text reveal">
+      <h2 class="cta-band__title"><%= cta.h2 %></h2>
+      <p class="cta-band__copy"><%= cta.text %></p>
+      <ul class="cta-band__points">
+        <li><%- icon('check-circle', 18) %> Same-day emergency appointments</li>
+        <li><%- icon('check-circle', 18) %> $99 new-patient special</li>
+        <li><%- icon('check-circle', 18) %> Written estimates before treatment</li>
+      </ul>
+    </div>
+    <div class="cta-band__card reveal" style="--d:120ms">
+      <p class="cta-band__card-eyebrow">Two ways to start</p>
+      <a class="btn btn--primary btn--lg btn--block" href="<%= cta.primary ? cta.primary.path : '/contact#book' %>">
+        <%- icon('calendar-check', 19) %> <%= cta.primary ? cta.primary.label : 'Book online' %>
+      </a>
+      <a class="btn btn--outline btn--lg btn--block" href="tel:<%= site.phoneHref %>">
+        <%- icon('phone', 19) %> Call <%= site.phone %>
+      </a>
+      <p class="cta-band__card-note">
+        <%- icon('clock', 16) %> <%= site.hoursSummary %>
+      </p>
+      <p class="cta-band__card-note">
+        <%- icon('alert-triangle', 16) %> In pain now? Call <a href="tel:<%= site.emergencyPhoneHref %>"><%= site.emergencyPhone %></a>
+      </p>
+    </div>
+  </div>
+</section>
+<% } %>

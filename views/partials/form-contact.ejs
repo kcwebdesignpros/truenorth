@@ -1,0 +1,136 @@
+<%
+var errs = typeof formErrors !== 'undefined' ? (formErrors || {}) : {};
+var vals = typeof formValues !== 'undefined' ? (formValues || {}) : {};
+function v(k) { return vals[k] == null ? '' : vals[k]; }
+var hasErrors = Object.keys(errs).length > 0;
+%>
+<section class="section section--soft" id="book">
+  <div class="container">
+    <div class="book">
+      <div class="book__intro reveal">
+        <p class="eyebrow">Request an appointment</p>
+        <h2 class="section__title">Tell us what you need — we will call you back within one business hour</h2>
+        <p>Send this form any time, day or night. During office hours we reply within an hour; outside them, we reply first thing the next morning. If you are in pain right now, please call <a href="tel:<%= site.emergencyPhoneHref %>"><%= site.emergencyPhone %></a> instead — that line is answered 24/7.</p>
+        <ul class="tick-list tick-list--tight">
+          <li><%- icon('check-circle', 19) %><span>New-patient appointments offered within 48 hours</span></li>
+          <li><%- icon('check-circle', 19) %><span>We verify your insurance before you arrive</span></li>
+          <li><%- icon('check-circle', 19) %><span>Written estimate before any treatment begins</span></li>
+        </ul>
+        <div class="book__alt">
+          <p><strong>Prefer to talk?</strong></p>
+          <a class="btn btn--ghost" href="tel:<%= site.phoneHref %>"><%- icon('phone', 18) %> <%= site.phone %></a>
+          <a class="btn btn--ghost" href="mailto:<%= site.email %>"><%- icon('mail', 18) %> <%= site.email %></a>
+        </div>
+      </div>
+
+      <div class="book__form-wrap reveal" style="--d:120ms">
+        <% if (typeof sent !== 'undefined' && sent) { %>
+        <div class="alert alert--success" role="status">
+          <span class="alert__ico"><%- icon('check-circle', 22) %></span>
+          <div>
+            <strong>Thank you — your request is in.</strong>
+            <p>A member of our front desk will call you on the number you gave us, usually within one business hour. If you do not hear from us by the end of the next business day, please call <a href="tel:<%= site.phoneHref %>"><%= site.phone %></a>.</p>
+          </div>
+        </div>
+        <% } %>
+
+        <% if (hasErrors) { %>
+        <div class="alert alert--error" role="alert">
+          <span class="alert__ico"><%- icon('alert-triangle', 22) %></span>
+          <div>
+            <strong>Please check the highlighted fields.</strong>
+            <p>We could not send your request yet.</p>
+          </div>
+        </div>
+        <% } %>
+
+        <form class="form" method="post" action="/contact#book" novalidate>
+          <input type="hidden" name="startedAt" value="<%= Date.now() %>">
+          <div class="form__hp" aria-hidden="true">
+            <label for="website">Website (leave blank)</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="form__row">
+            <div class="field<%= errs.firstName ? ' field--error' : '' %>">
+              <label for="firstName">First name <span aria-hidden="true">*</span></label>
+              <input type="text" id="firstName" name="firstName" value="<%= v('firstName') %>" autocomplete="given-name" required aria-describedby="err-firstName">
+              <% if (errs.firstName) { %><p class="field__err" id="err-firstName"><%= errs.firstName %></p><% } %>
+            </div>
+            <div class="field<%= errs.lastName ? ' field--error' : '' %>">
+              <label for="lastName">Last name <span aria-hidden="true">*</span></label>
+              <input type="text" id="lastName" name="lastName" value="<%= v('lastName') %>" autocomplete="family-name" required aria-describedby="err-lastName">
+              <% if (errs.lastName) { %><p class="field__err" id="err-lastName"><%= errs.lastName %></p><% } %>
+            </div>
+          </div>
+
+          <div class="form__row">
+            <div class="field<%= errs.email ? ' field--error' : '' %>">
+              <label for="email">Email <span aria-hidden="true">*</span></label>
+              <input type="email" id="email" name="email" value="<%= v('email') %>" autocomplete="email" required aria-describedby="err-email">
+              <% if (errs.email) { %><p class="field__err" id="err-email"><%= errs.email %></p><% } %>
+            </div>
+            <div class="field<%= errs.phone ? ' field--error' : '' %>">
+              <label for="phone">Phone <span aria-hidden="true">*</span></label>
+              <input type="tel" id="phone" name="phone" value="<%= v('phone') %>" autocomplete="tel" inputmode="tel" required aria-describedby="err-phone">
+              <% if (errs.phone) { %><p class="field__err" id="err-phone"><%= errs.phone %></p><% } %>
+            </div>
+          </div>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="patientType">I am a…</label>
+              <select id="patientType" name="patientType">
+                <option value="New patient"<%= v('patientType') === 'New patient' ? ' selected' : '' %>>New patient</option>
+                <option value="Existing patient"<%= v('patientType') === 'Existing patient' ? ' selected' : '' %>>Existing patient</option>
+                <option value="Returning after a break"<%= v('patientType') === 'Returning after a break' ? ' selected' : '' %>>Returning after a break</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="service">What do you need?</label>
+              <select id="service" name="service">
+                <option value="">Not sure yet</option>
+                <% services.forEach(function (s) { %>
+                <option value="<%= s.name %>"<%= v('service') === s.name ? ' selected' : '' %>><%= s.name %></option>
+                <% }); %>
+                <option value="Emergency / in pain"<%= v('service') === 'Emergency / in pain' ? ' selected' : '' %>>Emergency / in pain</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field<%= errs.preferred ? ' field--error' : '' %>">
+            <label for="preferred">When works best?</label>
+            <select id="preferred" name="preferred" aria-describedby="err-preferred">
+              <option value="">Any time</option>
+              <option value="Weekday mornings"<%= v('preferred') === 'Weekday mornings' ? ' selected' : '' %>>Weekday mornings</option>
+              <option value="Weekday afternoons"<%= v('preferred') === 'Weekday afternoons' ? ' selected' : '' %>>Weekday afternoons</option>
+              <option value="Saturday"<%= v('preferred') === 'Saturday' ? ' selected' : '' %>>Saturday</option>
+              <option value="As soon as possible"<%= v('preferred') === 'As soon as possible' ? ' selected' : '' %>>As soon as possible</option>
+            </select>
+            <% if (errs.preferred) { %><p class="field__err" id="err-preferred"><%= errs.preferred %></p><% } %>
+          </div>
+
+          <div class="field<%= errs.message ? ' field--error' : '' %>">
+            <label for="message">Anything we should know?</label>
+            <textarea id="message" name="message" rows="5" placeholder="Symptoms, dental anxiety, insurance questions — anything that helps us prepare." aria-describedby="err-message"><%= v('message') %></textarea>
+            <% if (errs.message) { %><p class="field__err" id="err-message"><%= errs.message %></p><% } %>
+          </div>
+
+          <div class="field field--check<%= errs.consent ? ' field--error' : '' %>">
+            <label class="check">
+              <input type="checkbox" name="consent" value="yes"<%= v('consent') ? ' checked' : '' %> required>
+              <span>I agree to be contacted about this request and I have read the <a href="/privacy-policy">privacy policy</a>. <span aria-hidden="true">*</span></span>
+            </label>
+            <% if (errs.consent) { %><p class="field__err"><%= errs.consent %></p><% } %>
+          </div>
+
+          <button class="btn btn--primary btn--lg btn--block" type="submit"><%- icon('send', 19) %> Request my appointment</button>
+          <p class="form__note">
+            <%- icon('lock', 15) %>
+            <span>Please do not include sensitive medical details in this form. This form is not for urgent medical emergencies — call <a href="tel:<%= site.emergencyPhoneHref %>"><%= site.emergencyPhone %></a> or 911.</span>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
