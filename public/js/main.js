@@ -463,4 +463,32 @@
       vp.style.overflowX = 'auto';
     });
   })();
+
+  /* ------------------------------------------ 14. Sticky mobile action bar */
+  (function mobileBar() {
+    var bar = $('#mobileBar');
+    if (!bar) return;
+
+    var showAfter = 420;
+    var ticking = false;
+
+    function update() {
+      var y = window.scrollY || window.pageYOffset;
+      var mobile = window.matchMedia('(max-width: 760px)').matches;
+      // Hide again at the very bottom so it never covers the footer's own CTA.
+      var nearBottom = y + window.innerHeight > document.documentElement.scrollHeight - 120;
+      var show = mobile && y > showAfter && !nearBottom;
+
+      bar.classList.toggle('is-visible', show);
+      if (show) bar.removeAttribute('hidden');
+      else bar.setAttribute('hidden', '');
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
 })();

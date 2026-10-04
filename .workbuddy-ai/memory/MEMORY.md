@@ -6,8 +6,20 @@
 - **Content lives in `data/`**, never in templates. `data/site.js` is the single source of
   truth for NAP, hours, nav, socials, insurance, stats and footer — nothing business-specific
   is hard-coded in a view.
+- **Content budget: 700–900 words per page.** Paragraphs 2–3 sentences (max 60 words), at most
+  two `prose` blocks per page, 4–6 blocks total, FAQs 5–7 with 1–2 sentence answers. Enforced
+  by `node scripts/wordcount.js`. The client explicitly rejected the original 2,000+ word pages
+  as too long for mobile.
 - **`CONTENT_SCHEMA.md` is the contract** for all content files (block types, field names,
   allowed icon names, business facts, image paths). Read it before editing any page.
+- **Never set a `padding` shorthand on an element that also has `.container`.** A shorthand
+  zeroes the horizontal padding and pushes hero copy flush to the screen edge. Use
+  `padding-block`. This bit the hero and page-hero on every page — see `scripts/verify-ui.js`
+  for the regression guard.
+- **Mobile patterns that must stay:** tables stack into cards below 720px (they need the
+  `data-label` attribute set in `blocks.ejs`); card grids become horizontal rows below 700px;
+  touch targets are 44px; the sticky mobile action bar appears past the hero and hides at the
+  page bottom.
 - **Static requires only** in `data/services/index.js`, `data/pages/index.js`,
   `data/posts/index.js`. A dynamic `require('./' + slug)` cannot be resolved by esbuild and
   breaks the Netlify function on every request.

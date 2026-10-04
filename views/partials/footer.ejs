@@ -112,3 +112,16 @@
 </footer>
 
 <button class="to-top" id="toTop" type="button" aria-label="Back to top"><%- icon('arrow-up', 20) %></button>
+
+<!-- Mobile-only sticky action bar. Appears once the hero is scrolled past so a
+     phone user is never more than one tap from calling or booking. -->
+<div class="mobile-bar" id="mobileBar" hidden>
+  <a class="mobile-bar__btn mobile-bar__btn--call" href="tel:<%= site.phoneHref %>">
+    <%- icon('phone', 19) %>
+    <span>Call now</span>
+  </a>
+  <a class="mobile-bar__btn mobile-bar__btn--book" href="/contact#book">
+    <%- icon('calendar-check', 19) %>
+    <span>Book appointment</span>
+  </a>
+</div>

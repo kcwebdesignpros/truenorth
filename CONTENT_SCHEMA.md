@@ -34,6 +34,31 @@ sentences). Second person ("you"). Concrete numbers and details. No em-dash over
 
 ---
 
+## Conciseness rules — MANDATORY (2026 revision)
+
+The first version of this site ran to 2,000+ words per page and reached **20–34 phone screens**,
+which is unusable. Every page has since been cut to **700–900 words**. Follow these rules:
+
+1. **Hard word budget: 700–900 words per page** (services and blog posts included). Count
+   `heroIntro` + every block's `body`/`text`/`intro` + `items[].text` + `faqs[].a`.
+   Going over 950 is a failure; 650 is acceptable only for legal pages.
+2. **Paragraphs: 2–3 sentences, 30–50 words.** Never more than 60 words. If a paragraph runs
+   long, split it or turn it into a `list` / `checklist`.
+3. **Prefer scannable blocks over `prose`.** A page should use at most **two** `prose` blocks.
+   Reach for `cards`, `checklist`, `steps`, `table`, `stats`, `split` instead — a phone user
+   skims, they do not read walls of text.
+4. **4–6 blocks per page** (not 8–11). Each block should earn its place.
+5. **One idea per block.** If a block needs three sub-points, use a `cards` or `checklist`.
+6. **FAQ answers: 1–2 sentences, under 45 words.** 5–7 questions per page (not 8–10).
+7. **`intro` fields: one sentence.** `tagline`: 8–14 words. `excerpt`: 25–35 words.
+8. **Cut ruthlessly, then cut again.** No throat-clearing, no restating the heading, no
+   "as we mentioned above". Lead with the point.
+9. Keep every SEO element: the primary keyword in `h1`, the first paragraph, at least one
+   `h2`, and the meta description. Short does not mean keyword-free.
+10. Every `faqs` entry must still appear in the matching `faq` block, verbatim.
+
+---
+
 ## Available icon names
 
 Use **only** these values in `icon:` fields.
@@ -179,8 +204,9 @@ module.exports = {
 };
 ```
 
-**Word count target: 1,900–2,300 words of body copy per page** (counted across
+**Word count target: 700–900 words of body copy per page** (counted across
 `heroIntro`, all block `body`/`text`/`intro` fields, `items[].text`, and `faqs[].a`).
+Use 4–6 blocks. See the Conciseness rules above.
 
 ---
 
@@ -213,7 +239,8 @@ module.exports = {
 };
 ```
 
-**Word count target: 1,900–2,300 words of body copy per service page.**
+**Word count target: 700–900 words of body copy per service page.** Use 4–6 blocks.
+See the Conciseness rules above.
 
 ---
 
@@ -244,7 +271,8 @@ module.exports = {
 };
 ```
 
-**Word count target: 1,300–1,800 words per post.**
+**Word count target: 700–900 words per post.** Use 4–6 blocks.
+See the Conciseness rules above.
 
 ---
 

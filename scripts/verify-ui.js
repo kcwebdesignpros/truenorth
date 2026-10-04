@@ -68,6 +68,50 @@ async function main() {
   results.push(['dropdown has 7 links (6 services + view all)', dropdown.links === 7]);
   await dp.screenshot({ path: path.join(OUT, 'desktop-dropdown.png'), clip: { x: 0, y: 0, width: 1440, height: 620 } });
 
+  /* ------------------- hero copy must align with the page grid ------------ */
+  // Regression guard: `.hero__inner` / `.page-hero__inner` are also `.container`,
+  // so any `padding: X 0 Y` shorthand or stray `max-width` on them silently
+  // centres the hero and pulls it out of alignment with every other section.
+  const alignRows = [];
+  for (const w of [1440, 1200, 1024, 900, 768, 480, 390, 360]) {
+    await dp.setViewportSize({ width: w, height: 900 });
+    for (const [label, url, heroSel] of [
+      ['home', '/', '.hero__inner'],
+      ['page', '/about', '.page-hero__inner']
+    ]) {
+      await dp.goto(BASE + url, { waitUntil: 'load', timeout: 30000 });
+      await dp.waitForTimeout(180);
+      const a = await dp.evaluate((sel) => {
+        const contentLeft = (s) => {
+          const el = document.querySelector(s);
+          if (!el) return null;
+          const cs = getComputedStyle(el);
+          return Math.round(el.getBoundingClientRect().left + (parseFloat(cs.paddingLeft) || 0));
+        };
+        // .footer__main is a plain .container — the reference grid edge.
+        return { hero: contentLeft(sel), grid: contentLeft('.footer__main') };
+      }, heroSel);
+      alignRows.push({ w, label, hero: a.hero, grid: a.grid });
+    }
+  }
+  const misaligned = alignRows.filter(
+    (r) => r.hero == null || r.grid == null || Math.abs(r.hero - r.grid) > 1
+  );
+  results.push([
+    'hero copy aligns with the page grid at 8 widths' +
+      (misaligned.length
+        ? ' — OFF BY: ' +
+          misaligned.map((r) => r.w + 'px/' + r.label + ' ' + r.hero + ' vs ' + r.grid).join(', ')
+        : ''),
+    misaligned.length === 0
+  ]);
+  const flushEdge = alignRows.filter((r) => r.hero < 14);
+  results.push([
+    'hero copy never touches the screen edge (min ' + Math.min(...alignRows.map((r) => r.hero)) + 'px)',
+    flushEdge.length === 0
+  ]);
+  await dp.setViewportSize({ width: 1440, height: 900 });
+
   /* --------------------------------- header geometry at several widths */
   const widths = [1440, 1280, 1100, 1000, 900, 800, 700, 600, 480, 390];
   const geom = [];
@@ -155,6 +199,46 @@ async function main() {
   await mp.waitForTimeout(500);
   const closed = await mp.evaluate(() => !document.getElementById('primaryNav').classList.contains('is-open'));
   results.push(['Escape closes the drawer', closed]);
+
+  /* ------------------------------------------- sticky mobile action bar */
+  await mp.goto(BASE + '/', { waitUntil: 'load', timeout: 30000 });
+  await mp.waitForTimeout(300);
+  const barTop = await mp.evaluate(() => {
+    const b = document.getElementById('mobileBar');
+    return { hidden: b.hasAttribute('hidden'), visible: b.classList.contains('is-visible') };
+  });
+  results.push(['mobile bar hidden at the top of the page', barTop.hidden && !barTop.visible]);
+
+  await mp.evaluate(() => window.scrollTo(0, 1200));
+  await mp.waitForTimeout(700);
+  const barMid = await mp.evaluate(() => {
+    const b = document.getElementById('mobileBar');
+    const r = b.getBoundingClientRect();
+    const book = b.querySelector('.mobile-bar__btn--book');
+    const br = book.getBoundingClientRect();
+    const hit = document.elementFromPoint(Math.round(br.x + br.width / 2), Math.round(br.y + br.height / 2));
+    return {
+      visible: b.classList.contains('is-visible') && !b.hasAttribute('hidden'),
+      onScreen: r.bottom <= window.innerHeight + 1 && r.bottom > window.innerHeight - 120,
+      bookClickable: b.contains(hit),
+      coversViewport: +(r.height / window.innerHeight).toFixed(2)
+    };
+  });
+  results.push(['mobile bar appears after scrolling past the hero', barMid.visible]);
+  results.push(['mobile bar sits at the bottom edge', barMid.onScreen]);
+  results.push(['mobile bar buttons are clickable', barMid.bookClickable]);
+  results.push(['mobile bar takes <15% of the viewport (' + barMid.coversViewport + ')', barMid.coversViewport < 0.15]);
+  await mp.screenshot({ path: path.join(OUT, 'mobile-action-bar.png') });
+
+  await mp.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await mp.waitForTimeout(700);
+  const barBottom = await mp.evaluate(() => {
+    const b = document.getElementById('mobileBar');
+    const foot = document.querySelector('.footer__cta');
+    const fr = foot.getBoundingClientRect();
+    return { hidden: b.hasAttribute('hidden'), footerCtaVisible: fr.bottom > 0 && fr.top < window.innerHeight };
+  });
+  results.push(['mobile bar hides at the page bottom so the footer CTA is clear', barBottom.hidden]);
 
   /* ------------------------------------------------ reduced motion mode */
   const rm = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });

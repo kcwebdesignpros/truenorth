@@ -184,7 +184,7 @@ var SIZES_FULL = '(min-width: 1240px) 1140px, 92vw';
           <tr>
             <% row.forEach(function (cell, ci) { %>
               <% if (ci === 0) { %><th scope="row"><%= esc(cell) %></th>
-              <% } else { %><td><%= esc(cell) %></td><% } %>
+              <% } else { %><td data-label="<%= esc(asList(b.head)[ci] || '') %>"><%= esc(cell) %></td><% } %>
             <% }); %>
           </tr>
           <% }); %>

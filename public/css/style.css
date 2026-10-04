@@ -454,10 +454,12 @@ h4 { font-size: 1.05rem; }
   background:
     linear-gradient(100deg, rgba(3, 32, 77, .95) 0%, rgba(4, 43, 100, .82) 38%, rgba(6, 59, 140, .38) 66%, rgba(8, 168, 184, .22) 100%);
 }
+/* No max-width here: it must inherit .container's width so the hero copy lines
+   up with every other section on the page. The measure is constrained on the
+   title/intro instead. */
 .hero__inner {
   position: relative;
-  padding: 104px 0 168px;
-  max-width: 800px;
+  padding-block: 104px 168px;
 }
 .hero__title {
   color: #fff;
@@ -465,6 +467,7 @@ h4 { font-size: 1.05rem; }
   font-weight: 800;
   line-height: 1.06;
   letter-spacing: -.03em;
+  max-width: 17ch;
   margin-bottom: .5em;
 }
 .hero__intro {
@@ -532,8 +535,11 @@ h4 { font-size: 1.05rem; }
   position: absolute; inset: 0;
   background: linear-gradient(100deg, rgba(3, 32, 77, .95) 0%, rgba(4, 43, 100, .86) 42%, rgba(6, 59, 140, .62) 74%, rgba(8, 168, 184, .38) 100%);
 }
-.page-hero__inner { position: relative; padding: 54px 0 76px; max-width: 900px; }
-.page-hero__title { color: #fff; font-size: clamp(2rem, 4.4vw, 3.2rem); margin-bottom: .4em; }
+/* padding-block, NOT the `padding` shorthand — a shorthand here would zero the
+   container's horizontal padding and push hero copy flush to the screen edge.
+   No max-width, so the hero aligns with the rest of the page grid. */
+.page-hero__inner { position: relative; padding-block: 54px 76px; }
+.page-hero__title { color: #fff; font-size: clamp(2rem, 4.4vw, 3.2rem); max-width: 20ch; margin-bottom: .4em; }
 .page-hero__intro { font-size: clamp(1rem, 1.4vw, 1.12rem); color: rgba(255, 255, 255, .85); max-width: 66ch; margin-bottom: 28px; }
 .page-hero__actions { display: flex; flex-wrap: wrap; gap: 13px; }
 .page-hero__meta { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 0 0 26px; }
@@ -1609,7 +1615,7 @@ h4 { font-size: 1.05rem; }
   }
 
   /* hero + layout shifts */
-  .hero__inner { padding: 72px 0 150px; }
+  .hero__inner { padding-block: 72px 150px; }
   .hero__img { object-position: 66% 26%; }
   .quick { grid-template-columns: 1fr; }
   .quick__item + .quick__item { border-left: 0; border-top: 1px solid var(--line); }
@@ -1664,11 +1670,11 @@ h4 { font-size: 1.05rem; }
   .topbar__list--right { margin-left: auto; }
 
   .brand__logo { width: 148px; }
-  .hero__inner { padding: 56px 0 140px; }
+  .hero__inner { padding-block: 56px 140px; }
   .hero__title { font-size: clamp(2rem, 8.4vw, 2.6rem); }
   .hero__actions { flex-direction: column; align-items: stretch; }
   .hero__actions .btn { width: 100%; }
-  .page-hero__inner { padding: 40px 0 56px; }
+  .page-hero__inner { padding-block: 40px 56px; }
   .page-hero__actions { flex-direction: column; align-items: stretch; }
   .page-hero__actions .btn { width: 100%; }
   .page-hero__stats { gap: 16px 30px; }
@@ -1717,3 +1723,353 @@ h4 { font-size: 1.05rem; }
   .member { padding: 24px 20px; }
   .nav { width: 100%; }
 }
+
+/* ==========================================================================
+   17. Mobile refinement
+   Addresses the issues found by scripts/audit-mobile.js:
+     • pages were 20–34 screens tall (content is now 700–900 words, this layer
+       removes the remaining vertical fat)
+     • tables forced horizontal scrolling
+     • the hero consumed 93% of the viewport
+     • 20–27 interactive elements per page were under the 44px target size
+   ========================================================================== */
+
+/* ---- 17a. Hero: get content above the fold ------------------------------ */
+@media (max-width: 760px) {
+  .hero__inner { padding-block: 42px 108px; }
+  .hero__title { font-size: clamp(1.9rem, 7.4vw, 2.3rem); line-height: 1.1; }
+  .hero__intro { font-size: 1rem; line-height: 1.6; margin-bottom: 22px; }
+  .hero__actions { margin-bottom: 24px; gap: 10px; }
+  .hero__points { gap: 6px 18px; }
+  .hero__points li { font-size: .82rem; }
+  .hero__quick { margin-top: -74px; }
+  .quick__link { padding: 20px 22px; gap: 14px; }
+  .quick__ico { width: 44px; height: 44px; border-radius: 13px; }
+
+  .page-hero__inner { padding-block: 32px 44px; }
+  .page-hero__meta { gap: 8px 20px; margin-bottom: 20px; }
+  .page-hero__meta li { font-size: .84rem; }
+  .page-hero__stats { margin-top: 28px; padding-top: 22px; gap: 14px 26px; }
+  .page-hero__stats strong { font-size: 1.35rem; }
+  .breadcrumbs { margin-bottom: 16px; }
+  .breadcrumbs a { min-height: 34px; display: inline-flex; align-items: center; }
+}
+
+@media (max-width: 560px) {
+  /* Three hero bullets wrap to three lines on a small phone — the trust bar
+     directly below carries the same message. */
+  .hero__points { display: none; }
+  .hero__inner { padding-bottom: 100px; }
+}
+
+/* ---- 17b. Tables become stacked cards ----------------------------------- */
+@media (max-width: 720px) {
+  .table-wrap {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .table { min-width: 0; display: block; font-size: .95rem; }
+  .table thead { display: none; }
+  .table tbody { display: block; }
+
+  .table tbody tr {
+    display: block;
+    margin-bottom: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background: #fff;
+    box-shadow: var(--sh-xs);
+    overflow: hidden;
+  }
+  .table tbody tr:last-child { margin-bottom: 0; }
+
+  .table tbody th {
+    display: block;
+    width: auto;
+    padding: 14px 18px;
+    background: var(--navy);
+    color: #fff;
+    font-size: .98rem;
+    border: 0;
+  }
+
+  .table tbody td {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 12px 18px;
+    border-top: 1px solid var(--line);
+    text-align: right;
+    background: transparent !important;
+  }
+  /* Column header carried through as a label on each stacked cell. */
+  .table tbody td::before {
+    content: attr(data-label);
+    flex: 0 0 40%;
+    text-align: left;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--slate-400);
+    padding-top: 3px;
+  }
+  .table tbody td:empty { display: none; }
+  .table tbody tr:hover td { background: transparent; }
+  .table__note { margin-top: 14px; }
+}
+
+/* ---- 17c. Touch targets (WCAG 2.2 target size) --------------------------- */
+@media (max-width: 900px) {
+  /* Navigation-style lists: full 44px rows */
+  .footer__links a,
+  .sitemap__list a,
+  .nav__info-list a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  /* Footer link lists go two-up so the footer gets SHORTER while every row
+     becomes a comfortable tap target. */
+  .footer__links {
+    grid-template-columns: 1fr 1fr;
+    gap: 0 18px;
+  }
+  .footer__links a { border-bottom: 1px solid rgba(255, 255, 255, .07); }
+
+  /* Contact / legal links */
+  .footer__address a,
+  .footer__legal a,
+  .footer__credit a,
+  .footer__hours li { min-height: 40px; }
+  .footer__legal { gap: 0 22px; }
+  .footer__legal a { display: inline-flex; align-items: center; }
+
+  /* In-content links */
+  .card__link,
+  .post-card__more,
+  .svc-card__more,
+  .result__more,
+  .toc__list a,
+  .chips__item a,
+  .dropdown__all {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+  }
+  .dropdown__link { min-height: 48px; align-items: center; }
+  .filter__btn { min-height: 44px; }
+  .share__btn { width: 44px; height: 44px; }
+  .faq__q { min-height: 56px; }
+  .btn { min-height: 48px; }
+  .btn--lg { min-height: 54px; }
+}
+
+/* Carousel dots: 8px visual, ~28px hit area */
+.carousel__dots button { position: relative; }
+.carousel__dots button::after {
+  content: '';
+  position: absolute;
+  inset: -10px -6px;
+}
+
+/* ---- 17d. Vertical rhythm: remove the mobile fat ------------------------ */
+@media (max-width: 760px) {
+  body { font-size: 17px; line-height: 1.62; }
+  .prose p { font-size: 1rem; }
+  .prose > p:first-of-type { font-size: 1.06rem; }
+  .section__intro { font-size: 1rem; }
+  h2 { font-size: clamp(1.45rem, 6.2vw, 1.9rem); }
+  h3 { font-size: 1.12rem; }
+
+  .section { padding: 48px 0; }
+  .section--tight { padding: 26px 0; }
+  .section__head { margin-bottom: 28px; }
+  .section__foot { margin-top: 30px; }
+
+  .cards { gap: 16px; }
+  .card { padding: 26px 22px; }
+  .card__ico { width: 50px; height: 50px; margin-bottom: 16px; border-radius: 14px; }
+  .svc-grid, .post-grid { gap: 18px; }
+  .svc-card__body { padding: 24px 22px 22px; }
+  .trust { gap: 14px; }
+  .trust__item { padding: 20px 18px; }
+  .stats { gap: 10px; }
+  .stat { padding: 14px 8px; }
+  .step { padding: 22px 0; gap: 16px; }
+  .timeline__item { padding-bottom: 26px; }
+  .split { gap: 30px; }
+  .gallery { gap: 14px; }
+  .faq__q { padding: 16px 20px; font-size: 1rem; }
+  .faq__a { padding: 0 20px 18px; }
+  .pullquote { padding: 28px 22px; }
+  .pullquote__text p { font-size: 1.12rem; }
+  .inline-cta { padding: 30px 24px; gap: 22px; }
+  .offer__left, .offer__right { padding: 30px 24px; }
+  .offer__includes { margin-bottom: 14px; }
+  .member { padding: 22px 18px; gap: 20px; }
+  .team-full { gap: 20px; }
+  .book__form-wrap { padding: 24px 20px; }
+  .book__intro { margin-bottom: 4px; }
+  .author-box { padding: 24px 20px; }
+  .cta-band { padding: 56px 0; }
+  .cta-band__card { padding: 26px 22px; }
+  .footer__cta { padding: 28px 24px; }
+  .footer__glow { width: 320px; height: 320px; top: -120px; right: -120px; }
+  .site-footer { padding-top: 56px; }
+  .footer__main { gap: 34px; padding-bottom: 40px; }
+  .footer__areas { margin-top: 34px; }
+  .footer__areas-list { font-size: .82rem; line-height: 1.7; }
+  .sitemap { gap: 18px; }
+  .sitemap__col { padding: 22px 20px; }
+  .lost-grid { gap: 14px; }
+  .lost { padding: 24px 20px; }
+  .marquee__item { padding: 12px 20px; font-size: .88rem; }
+}
+
+@media (max-width: 480px) {
+  .section { padding: 42px 0; }
+  .quick__link { padding: 18px 18px; }
+  .footer__links { grid-template-columns: 1fr; }
+  .cta-band__points li { font-size: .88rem; }
+}
+
+/* ---- 17e. Card grids become compact list rows --------------------------- */
+/* A 6-card service grid rendered as stacked cards costs ~2.9 phone screens on
+   its own. Turning each card into a row (thumbnail + copy) cuts that to ~0.9
+   while keeping every link and label. */
+@media (max-width: 700px) {
+  .svc-grid, .svc-grid--2, .svc-grid--3 { gap: 12px; }
+
+  .svc-card__link { flex-direction: row; align-items: stretch; }
+  .svc-card__media { flex: 0 0 104px; }
+  .svc-card__img { aspect-ratio: 1 / 1; height: 100%; }
+  .svc-card__body { padding: 15px 16px 15px 16px; }
+  .svc-card__ico {
+    width: 34px; height: 34px;
+    margin: 0 0 7px;
+    border-radius: 10px;
+    background: var(--soft);
+    box-shadow: none;
+  }
+  .svc-card__ico svg { width: 18px; height: 18px; }
+  .svc-card:hover .svc-card__ico { background: var(--navy); color: #fff; }
+  .svc-card__title { font-size: 1rem; margin-bottom: 3px; }
+  .svc-card__text { font-size: .85rem; line-height: 1.5; }
+  .svc-card__more { margin-top: 7px; font-size: .8rem; }
+
+  .post-grid, .post-grid--wide { gap: 12px; }
+  .post-card__link { flex-direction: row; align-items: stretch; }
+  .post-card__media { flex: 0 0 112px; }
+  .post-card__img { aspect-ratio: 1 / 1; height: 100%; }
+  .post-card__cat { top: 7px; left: 7px; padding: 4px 9px; font-size: .58rem; letter-spacing: .04em; }
+  .post-card__body { padding: 14px 15px; }
+  .post-card__meta { font-size: .72rem; margin-bottom: 5px; }
+  .post-card__title { font-size: .98rem; line-height: 1.3; margin-bottom: 6px; }
+  .post-card__excerpt {
+    font-size: .84rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .post-card__more { margin-top: 8px; font-size: .8rem; }
+
+  .filter { margin-bottom: 22px; padding-bottom: 18px; }
+  .filter__count { margin-left: 0; flex-basis: 100%; }
+}
+
+/* ---- 17f. Team profiles: compact round avatar --------------------------- */
+@media (max-width: 760px) {
+  .member { grid-template-columns: 1fr; gap: 14px; padding: 22px 18px; }
+  .member__media { max-width: 108px; border-radius: 50%; }
+  .member__img { border-radius: 50%; }
+  .member__initials { font-size: 1.9rem; }
+  .member__name { font-size: 1.25rem; margin-bottom: .35em; }
+  .member__bio { font-size: .94rem; }
+  .member__cols { gap: 18px; margin: 16px 0 14px; }
+  .member__fun { padding: 12px 15px; font-size: .85rem; margin-bottom: 16px; }
+  .person__img { object-position: 50% 18%; }
+}
+
+/* ---- 17g. Stats stay two-up on small phones ----------------------------- */
+@media (max-width: 480px) {
+  .stats { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat { padding: 12px 6px; }
+  .stat__value { font-size: 1.7rem; }
+  .stat__label { font-size: .8rem; margin-top: 4px; }
+}
+
+/* ---- 17h. Small-screen legibility + topbar tap area --------------------- */
+@media (max-width: 760px) {
+  .eyebrow { font-size: .82rem; margin-bottom: 10px; }
+  .eyebrow::before { width: 20px; }
+  .topbar__list a,
+  .topbar__list > li > span { min-height: 42px; }
+  .topbar__socials a { width: 34px; height: 34px; }
+  .to-top { width: 46px; height: 46px; }
+}
+
+/* ---- 17i. Sticky mobile action bar ------------------------------------- */
+.mobile-bar { display: none; }
+
+@media (max-width: 760px) {
+  .mobile-bar {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 70;
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 10px;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, .97);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -8px 26px -14px rgba(6, 59, 140, .38);
+    transform: translateY(110%);
+    transition: transform .32s var(--ease);
+  }
+  .mobile-bar[hidden] { display: grid; }        /* keep layout, animate instead */
+  .mobile-bar.is-visible { transform: translateY(0); }
+
+  .mobile-bar__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 50px;
+    padding: 0 14px;
+    border-radius: var(--r-pill);
+    font-size: .92rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .mobile-bar__btn svg { flex: none; }
+  .mobile-bar__btn--call {
+    background: var(--soft);
+    color: var(--navy);
+    border: 1.5px solid var(--line-strong);
+  }
+  .mobile-bar__btn--book {
+    background: var(--blue);
+    color: #fff;
+    box-shadow: 0 10px 22px -12px rgba(8, 120, 217, .8);
+  }
+  .mobile-bar__btn--book:hover { color: #fff; }
+
+  /* Keep the last of the footer clear of the fixed bar */
+  .site-footer { padding-bottom: 82px; }
+  /* Lift back-to-top above the bar */
+  .to-top { bottom: 84px; }
+}
+
+@media (max-width: 380px) {
+  .mobile-bar { grid-template-columns: 1fr 1fr; }
+  .mobile-bar__btn { font-size: .84rem; padding: 0 10px; }
+}
+
+
+
