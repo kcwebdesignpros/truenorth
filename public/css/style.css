@@ -1484,6 +1484,18 @@ h4 { font-size: 1.05rem; }
 .footer__credit { margin: 0; font-size: .85rem; color: rgba(255, 255, 255, .62); }
 .footer__credit a { color: var(--cyan); font-weight: 700; }
 .footer__credit a:hover { color: #fff; text-decoration: underline; }
+/* The heart sits between the prefix and the studio name. It is a filled glyph
+   that inherits `currentColor`, so it is tinted here rather than in the markup.
+   `vertical-align` + a negative nudge keeps it optically centred on the text
+   baseline — `inline` alone would sit it on the baseline and ride high. */
+.footer__credit-love {
+  display: inline-block;
+  margin: 0 4px 0 1px;
+  color: #FF6B81;
+  vertical-align: -0.16em;
+  line-height: 0;
+}
+.footer__credit-love svg { display: block; }
 .footer__disclaimer {
   margin: 0 0 34px;
   padding-top: 22px;

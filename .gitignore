@@ -16,3 +16,6 @@ npm-debug.log*
 .env.local
 .DS_Store
 Thumbs.db
+
+# local agent working notes (internal, not part of the deliverable)
+.workbuddy-ai/
