@@ -33,10 +33,21 @@
 ```
 npm start              # run the Express server on :3000
 npm run images         # regenerate WebP masters, variants, favicons, og-image
-node scripts/fetch-fonts.js     # re-download self-hosted fonts (one-off)
-node scripts/verify-ui.js       # Playwright UI assertions + screenshots
+npm run fonts          # re-download self-hosted fonts (one-off)
+npm run verify:ui      # Playwright UI assertions + screenshots
+node scripts/check-seo.js       # validate JSON-LD, footer credit, SEO tags
 npm run prepare:netlify         # copy img/ → public/img/ for the Netlify publish dir
 ```
+
+## Git
+- Repo: https://github.com/kcwebdesignpros/truenorth.git (public), default branch `main`.
+- Commit identity is set **repo-local** to `KC Web Design Pros <hello@kansascitywebdesignpros.com>`
+  (there is no global git identity on this machine).
+- Auth via Git Credential Manager (`credential.helper=manager`). `GIT_TERMINAL_PROMPT=0` is set
+  machine-wide, so only the GCM browser flow works — never expect a terminal prompt.
+- `.gitattributes` enforces LF; `core.autocrlf=false` locally.
+- Never commit `public/img/` (build artefact), `img/raw/` (27 MB generator output) or
+  `_screenshots/` — all gitignored.
 
 ## Deployment
 - **Netlify** (primary target): `netlify.toml` publishes `public/`, routes everything to
