@@ -10,6 +10,9 @@
     "images": "node scripts/generate-image-variants.js",
     "fonts": "node scripts/fetch-fonts.js",
     "verify:ui": "node scripts/verify-ui.js",
+    "verify:contrast": "node scripts/audit-contrast.js",
+    "check:seo": "node scripts/check-seo.js",
+    "check:words": "node scripts/wordcount.js",
     "prepare:netlify": "node scripts/prepare-netlify.js"
   },
   "engines": {
